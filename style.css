@@ -1,0 +1,436 @@
+/* style.css (เวอร์ชันปรับปรุงใหม่) */
+
+/* --- Universal Box Sizing --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* 1. Import Fonts และ กำหนดค่าสีหลัก (CSS Variables) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+:root {
+    --primary-color: #007bff;
+    --primary-hover: #0056b3;
+    --secondary-color: #6c757d;
+    --background-color: #f8f9fa;
+    --surface-color: #ffffff;
+    --text-color: #212529;
+    --border-color: #dee2e6;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --font-primary: 'Poppins', sans-serif;
+    --font-code: 'Fira Code', monospace;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+}
+
+/* 2. สไตล์พื้นฐาน */
+body {
+    font-family: var(--font-primary);
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+header {
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    padding: 1rem 2rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+
+nav a {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+}
+
+nav a:hover {
+    background-color: var(--primary-color);
+    color: var(--surface-color);
+    border-color: var(--primary-color);
+}
+
+main {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+/* 3. สไตล์สำหรับ List ของ Code */
+#code-list, #code-management-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.code-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.code-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    margin-bottom: 1rem;
+}
+
+.card-header h2, .card-header h3 {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.code-card p {
+    margin: 0 0 1rem 0;
+    color: var(--secondary-color);
+    flex-grow: 1; /* ทำให้ description ยืดเต็มพื้นที่ที่เหลือ */
+}
+
+.code-card small {
+    color: var(--secondary-color);
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    text-align: right;
+}
+
+/* 4. สไตล์สำหรับ Block แสดง Code */
+.code-block-wrapper {
+    position: relative;
+    max-height: 200px; /* Set a fixed max-height */
+    overflow: hidden;
+}
+
+/* Fade-out effect to indicate more content */
+.code-block-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(45, 45, 45, 0), rgba(45, 45, 45, 1));
+    pointer-events: none; /* Allows clicking through the gradient */
+}
+
+.code-card pre {
+    background-color: #2d2d2d; /* Dark background for code */
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 0;
+}
+
+.code-card code {
+    font-family: var(--font-code);
+    color: #f8f8f2; /* Light text color for code */
+    font-size: 0.9rem;
+}
+
+.copy-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.code-block-wrapper:hover .copy-button {
+    opacity: 1;
+}
+.copy-button:hover {
+    background-color: var(--primary-color);
+}
+
+.view-full-code-button {
+    background-color: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 6px 12px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    margin-top: 10px;
+    align-self: flex-start;
+    transition: all 0.3s ease;
+}
+
+.view-full-code-button:hover {
+    background-color: var(--secondary-color);
+    color: var(--surface-color);
+}
+
+/* 5. ข้อความสถานะต่างๆ */
+.loading-message, .error-message, .no-codes-message {
+    grid-column: 1 / -1; /* ทำให้กินพื้นที่เต็มแถว */
+    text-align: center;
+    padding: 40px;
+    font-style: italic;
+    color: var(--secondary-color);
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+}
+
+.error-message {
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+/* 6. สไตล์สำหรับหน้า Admin */
+#admin-login {
+    background-color: var(--surface-color);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    max-width: 400px;
+    margin: 40px auto;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+#admin-login h2 {
+    margin-top: 0;
+    color: var(--primary-color);
+}
+#admin-login input[type="password"] {
+    padding: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    width: 90%;
+    font-size: 1rem;
+}
+
+.btn {
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+}
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+#add-code-button {
+    margin-bottom: 1.5rem;
+}
+
+.admin-card {
+    border: 2px solid var(--primary-color);
+}
+
+.admin-actions {
+    margin-top: 1rem;
+    text-align: right;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    font-size: 0.9rem;
+    padding: 8px 12px;
+}
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* 7. สไตล์สำหรับ Modal ทั่วไป */
+.modal {
+    position: fixed; z-index: 1000; left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.modal:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: var(--surface-color);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    width: 90%;
+    max-width: 600px;
+    border-radius: var(--border-radius);
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+.modal:not(.hidden) .modal-content {
+    transform: scale(1);
+}
+
+.close-button {
+    position: absolute; top: 10px; right: 20px;
+    color: var(--secondary-color);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-button:hover { color: var(--text-color); }
+
+.modal-content h2 { color: var(--primary-color); margin-top: 0; }
+.modal-content form label {
+    display: block; margin-top: 1rem; margin-bottom: 5px; font-weight: 600;
+}
+.modal-content form input[type="text"], .modal-content form textarea {
+    width: calc(100% - 24px); padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-family: var(--font-primary);
+}
+.modal-content form #sql-code-area {
+    font-family: var(--font-code);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    margin-top: 1rem;
+}
+.btn-success:hover {
+    background-color: #218838;
+}
+
+#save-message { margin-top: 10px; font-weight: bold; }
+
+.hidden { display: none !important; }
+
+/* 8. Styles for the View Code Modal */
+.modal-content.large {
+    max-width: 900px; /* Wider modal for code */
+    width: 90%;
+}
+
+.modal-code-container {
+    position: relative;
+    margin-top: 1rem;
+}
+
+.modal-code-container #modal-code-content-pre {
+    background-color: #2d2d2d;
+    border-radius: 6px;
+    padding: 1rem;
+    max-height: 65vh; /* Limit height and make it scrollable */
+    overflow: auto;
+    margin: 0;
+}
+
+/* Adjust position of the copy button inside the modal */
+.modal-code-container .copy-button {
+    opacity: 1; /* Always visible in modal */
+}
+
+/* 9. Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    #code-list, #code-management-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 10. Styles for the NEW Modal Copy Button */
+#modal-copy-button {
+    /* Override positioning and initial opacity */
+    opacity: 0; /* << CHANGE THIS LINE from 1 to 0 to hide it by default */
+    position: absolute;
+    top: 12px;
+    right: 30px;
+
+    /* New Design */
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* --- ADD THIS NEW RULE right after the one above --- */
+/* Show button on hover OR when in 'copied' state */
+.modal-code-container:hover #modal-copy-button,
+#modal-copy-button.copied {
+    opacity: 1;
+}
+
+/* Style for the SVG icon inside the button */
+#modal-copy-button svg {
+    width: 20px;
+    height: 20px;
+    stroke: #fff; /* Set icon color */
+    transition: transform 0.2s ease;
+}
+
+/* Hover effect */
+#modal-copy-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+#modal-copy-button:hover svg {
+    transform: scale(1.1);
+}
+
+/* "Copied" success state */
+#modal-copy-button.copied {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    transform: scale(1.1);
+}
+
+#modal-copy-button.copied svg {
+    transform: scale(1);
+}

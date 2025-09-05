@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - SQL Codes</title>
+
+    <!-- Google Fonts: Poppins & Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Prism.js for Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Panel</h1>
+        <nav>
+            <a href="index.html">View Codes</a>
+        </nav>
+    </header>
+    <main>
+        <div id="admin-login">
+            <h2>Admin Login</h2>
+            <input type="password" id="admin-password" placeholder="Enter Admin Password">
+            <button id="login-button" class="btn btn-primary">Login</button>
+            <p id="login-message" class="error-message"></p>
+        </div>
+
+        <div id="admin-dashboard" class="hidden">
+            <h2>Manage SQL Codes</h2>
+            <button id="add-code-button" class="btn btn-primary">Add New Code</button>
+
+            <div id="code-management-list">
+                <!-- Admin code list will be loaded here -->
+                <p class="loading-message">Loading codes for admin...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Code Modal -->
+    <div id="add-code-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Add New SQL Code</h2>
+            <form id="add-code-form">
+                <label for="code-title">Title:</label>
+                <input type="text" id="code-title" required>
+
+                <label for="code-description">Description:</label>
+                <textarea id="code-description" rows="3"></textarea>
+
+                <label for="sql-code-area">SQL Code:</label>
+                <textarea id="sql-code-area" rows="10" required></textarea>
+
+                <button type="submit" class="btn btn-success">Save Code</button>
+                <p id="save-message"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- ==   Modal for Viewing Full SQL Code       == -->
+    <!-- ============================================= -->
+    <div id="view-code-modal" class="modal hidden">
+        <div class="modal-content large">
+            <span id="modal-close-button" class="close-button">&times;</span>
+            <h2 id="modal-code-title">SQL Code</h2>
+            <div class="modal-code-container">
+                 <button id="modal-copy-button" class="copy-button">Copy</button>
+                 <pre id="modal-code-content-pre"><code class="language-sql"></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prism.js Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
