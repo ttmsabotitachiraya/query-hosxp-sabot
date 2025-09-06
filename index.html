@@ -22,10 +22,23 @@
         </nav>
     </header>
     <main>
+        <!-- ============================================= -->
+        <!-- ==        ADDED: Search Input Box          == -->
+        <!-- ============================================= -->
+        <div class="search-container">
+            <input type="search" id="search-input" placeholder="Search by title, description, or code...">
+        </div>
+
         <div id="code-list">
              <!-- SQL codes will be loaded here -->
             <p class="loading-message">Loading SQL codes...</p>
         </div>
+        
+        <!-- ============================================= -->
+        <!-- ==     ADDED: No Results Message           == -->
+        <!-- ============================================= -->
+        <p id="no-results-message" class="no-codes-message hidden">No SQL codes found matching your search.</p>
+
     </main>
 
     <!-- ============================================= -->
@@ -35,6 +48,7 @@
         <div class="modal-content large">
             <span id="modal-close-button" class="close-button">&times;</span>
             <h2 id="modal-code-title">SQL Code</h2>
+            <p id="modal-code-description"></p>
             <div class="modal-code-container">
                  <button id="modal-copy-button" class="copy-button">Copy</button>
                  <pre id="modal-code-content-pre"><code class="language-sql"></code></pre>

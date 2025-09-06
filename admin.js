@@ -18,9 +18,14 @@ const addCodeForm = document.getElementById('add-code-form');
 const saveMessage = document.getElementById('save-message');
 const codeManagementList = document.getElementById('code-management-list');
 
+// --- ADDED: Get Search DOM Elements ---
+const searchInput = document.getElementById('search-input');
+const noResultsMessage = document.getElementById('no-results-message');
+
 // --- Get View Code Modal DOM Elements ---
 const viewCodeModal = document.getElementById('view-code-modal');
 const modalCodeTitle = document.getElementById('modal-code-title');
+const modalCodeDescription = document.getElementById('modal-code-description');
 const modalCodeContentPre = document.getElementById('modal-code-content-pre');
 const modalCloseButton = document.getElementById('modal-close-button');
 const modalCopyButton = document.getElementById('modal-copy-button');
@@ -28,8 +33,9 @@ const modalCopyButton = document.getElementById('modal-copy-button');
 let isAdminAuthenticated = false;
 
 // --- View Code Modal Functions ---
-function openCodeModal(title, code) {
+function openCodeModal(title, description, code) {
     modalCodeTitle.textContent = title;
+    modalCodeDescription.textContent = description;
     const codeElement = modalCodeContentPre.querySelector('code');
     codeElement.textContent = code;
     Prism.highlightElement(codeElement);
@@ -39,11 +45,11 @@ function openCodeModal(title, code) {
 function closeCodeModal() {
     viewCodeModal.classList.add('hidden');
     modalCodeTitle.textContent = '';
+    modalCodeDescription.textContent = '';
     modalCodeContentPre.querySelector('code').textContent = '';
 }
 
 // --- Card Button Handlers ---
-// This handler is for the copy button ON THE CARD (uses text feedback)
 function handleCopyCode(event) {
     const button = event.currentTarget;
     const pre = button.closest('.code-block-wrapper').querySelector('pre');
@@ -54,9 +60,39 @@ function handleCopyCode(event) {
     }).catch(err => console.error('Failed to copy text: ', err));
 }
 
+// --- ADDED: Search Filter Function ---
+function filterCodes() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const codeCards = document.querySelectorAll('#code-management-list .code-card');
+    let visibleCount = 0;
+
+    codeCards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const description = card.querySelector('p').textContent.toLowerCase();
+        const codeContent = card.querySelector('code').textContent.toLowerCase();
+
+        const isVisible = title.includes(searchTerm) || 
+                          description.includes(searchTerm) || 
+                          codeContent.includes(searchTerm);
+
+        if (isVisible) {
+            card.style.display = 'flex';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    if (visibleCount === 0 && searchTerm !== '') {
+        noResultsMessage.classList.remove('hidden');
+    } else {
+        noResultsMessage.classList.add('hidden');
+    }
+}
+
 // --- Main Admin Functions ---
 async function verifyAdminPassword(password) {
-    const { data, error } = await supabase.from('admin_settings').select('setting_value').eq('setting_key', 'admin_password').single();
+    const { data, error } = await supabase.from('queryhosxpsabot_admin_settings').select('setting_value').eq('setting_key', 'admin_password').single(); // <-- EDITED
     if (error) { console.error('Error fetching admin password:', error.message); return false; }
     return data && data.setting_value === password;
 }
@@ -80,7 +116,7 @@ async function loadAdminSqlCodes() {
     codeManagementList.innerHTML = '<p class="loading-message">Loading codes for admin...</p>';
     if (!isAdminAuthenticated) { codeManagementList.innerHTML = '<p class="error-message">Access Denied. Please log in as Admin.</p>'; return; }
 
-    const { data: sqlCodes, error } = await supabase.from('sql_codes').select('*').order('created_at', { ascending: false });
+    const { data: sqlCodes, error } = await supabase.from('queryhosxpsabot_sql_codes').select('*').order('created_at', { ascending: false }); // <-- EDITED
     if (error) { codeManagementList.innerHTML = '<p class="error-message">Failed to load admin SQL codes.</p>'; return; }
     
     codeManagementList.innerHTML = '';
@@ -102,6 +138,9 @@ async function loadAdminSqlCodes() {
         `;
         codeManagementList.appendChild(codeCard);
     });
+    
+    searchInput.value = '';
+    filterCodes();
 
     // Add event listeners for all buttons
     document.querySelectorAll('.copy-button').forEach(button => button.addEventListener('click', handleCopyCode));
@@ -113,8 +152,9 @@ async function loadAdminSqlCodes() {
         if (pre.scrollHeight > 200) {
             button.addEventListener('click', () => {
                 const title = card.querySelector('h3').textContent;
+                const description = card.querySelector('p').textContent;
                 const code = card.querySelector('code').textContent;
-                openCodeModal(title, code);
+                openCodeModal(title, description, code);
             });
         } else {
             button.style.display = 'none';
@@ -132,7 +172,7 @@ async function handleAddCode(event) {
     const description = document.getElementById('code-description').value;
     const code = document.getElementById('sql-code-area').value;
     if (!title || !code) { saveMessage.style.color = 'red'; saveMessage.textContent = 'Title and SQL Code are required.'; return; }
-    const { error } = await supabase.from('sql_codes').insert([{ title, description, code }]);
+    const { error } = await supabase.from('queryhosxpsabot_sql_codes').insert([{ title, description, code }]); // <-- EDITED
     if (error) {
         saveMessage.style.color = 'red';
         saveMessage.textContent = 'Error saving code: ' + error.message;
@@ -152,7 +192,7 @@ async function handleDeleteCode(event) {
     if (!isAdminAuthenticated) { alert('Authentication required to delete code.'); return; }
     const codeId = event.target.dataset.id;
     if (confirm('Are you sure you want to delete this SQL code?')) {
-        const { error } = await supabase.from('sql_codes').delete().eq('id', codeId);
+        const { error } = await supabase.from('queryhosxpsabot_sql_codes').delete().eq('id', codeId); // <-- EDITED
         if (error) { alert('Failed to delete code: ' + error.message); } 
         else { alert('Code deleted successfully!'); loadAdminSqlCodes(); }
     }
@@ -170,17 +210,15 @@ window.addEventListener('click', (event) => { if (event.target === addCodeModal)
 addCodeForm.addEventListener('submit', handleAddCode);
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Set initial icon for the modal copy button
     modalCopyButton.innerHTML = copyIconSVG;
     adminDashboardDiv.classList.add('hidden');
+    searchInput.addEventListener('input', filterCodes);
 });
 
 // --- View Code Modal Event Listeners ---
 modalCloseButton.addEventListener('click', closeCodeModal);
 viewCodeModal.addEventListener('click', (event) => { if (event.target === viewCodeModal) closeCodeModal(); });
 document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !viewCodeModal.classList.contains('hidden')) closeCodeModal(); });
-
-// MODIFIED: Modal copy button listener to use icons
 modalCopyButton.addEventListener('click', () => {
     const codeToCopy = modalCodeContentPre.querySelector('code').innerText;
     navigator.clipboard.writeText(codeToCopy).then(() => {

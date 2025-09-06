@@ -47,6 +47,9 @@ header {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border-color);
+    position: sticky; /* ADDED: ทำให้ header ติดตามเมื่อเลื่อนจอ */
+    top: 0; /* ADDED: ตำแหน่งของ header */
+    z-index: 100; /* ADDED: ให้ header อยู่เหนือเนื้อหาอื่น */
 }
 
 header h1 {
@@ -78,6 +81,31 @@ main {
     margin: 20px auto;
 }
 
+/* ============================================= */
+/* ==   ADDED: Styles for Search Container    == */
+/* ============================================= */
+.search-container {
+    margin-bottom: 2rem;
+    background: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+#search-input {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-family: var(--font-primary);
+}
+#search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+
 /* 3. สไตล์สำหรับ List ของ Code */
 #code-list, #code-management-list {
     display: grid;
@@ -94,6 +122,8 @@ main {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .code-card:hover {
@@ -149,6 +179,10 @@ main {
     border-radius: 6px;
     overflow-x: auto;
     margin: 0;
+    max-width: 100%;       /* ไม่ให้เกินขอบ */
+    overflow-x: auto;      /* ถ้าโค้ดยาว ให้เลื่อนซ้าย-ขวาได้ */
+    white-space: pre;      /* คงรูปแบบโค้ดเดิม */
+    word-wrap: normal;     /* ป้องกันการตัดคำผิด */
 }
 
 .code-card code {
@@ -196,7 +230,7 @@ main {
 }
 
 /* 5. ข้อความสถานะต่างๆ */
-.loading-message, .error-message, .no-codes-message {
+.loading-message, .error-message, .no-codes-message, #no-results-message {
     grid-column: 1 / -1; /* ทำให้กินพื้นที่เต็มแถว */
     text-align: center;
     padding: 40px;
@@ -204,6 +238,7 @@ main {
     color: var(--secondary-color);
     background: var(--surface-color);
     border-radius: var(--border-radius);
+    border: 1px dashed var(--border-color); /* ADDED: เพิ่มเส้นประให้ดูเด่นขึ้น */
 }
 
 .error-message {
@@ -319,7 +354,8 @@ main {
     display: block; margin-top: 1rem; margin-bottom: 5px; font-weight: 600;
 }
 .modal-content form input[type="text"], .modal-content form textarea {
-    width: calc(100% - 24px); padding: 12px;
+    width: 100%; /* CHANGED: ให้เต็มความกว้าง */
+    padding: 12px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     font-size: 1rem;
@@ -340,6 +376,14 @@ main {
 #save-message { margin-top: 10px; font-weight: bold; }
 
 .hidden { display: none !important; }
+
+#modal-code-description {
+    margin-bottom: 1.5rem;
+    padding-left: 1rem;
+    font-style: italic;
+    color: var(--secondary-color);
+    border-left: 3px solid var(--border-color);
+}
 
 /* 8. Styles for the View Code Modal */
 .modal-content.large {
@@ -366,26 +410,47 @@ main {
     opacity: 1; /* Always visible in modal */
 }
 
-/* 9. Responsive Design */
+/* ============================================= */
+/* ==   9. Responsive Design & Mobile UX      == */
+/* ============================================= */
 @media (max-width: 768px) {
     header {
         flex-direction: column;
         gap: 1rem;
+        text-align: center; /* MODIFIED: จัดกลางเมื่อเรียงเป็นคอลัมน์ */
     }
+    
+    header h1 {
+        font-size: 1.5rem; /* ADDED: ลดขนาด H1 บนมือถือ */
+    }
+    
+    main {
+        padding: 1rem; /* MODIFIED: ลด padding บนมือถือ */
+    }
+
     #code-list, #code-management-list {
         grid-template-columns: 1fr;
     }
+
+    .modal-content {
+        padding: 1.5rem; /* MODIFIED: ลด padding ของ modal บนมือถือ */
+    }
 }
+
+@media (max-width: 480px) {
+    .code-card pre {
+        white-space: pre-wrap; /* ตัดบรรทัดให้อ่านง่ายขึ้น */
+        word-break: break-word;
+    }
+}
+
 
 /* 10. Styles for the NEW Modal Copy Button */
 #modal-copy-button {
-    /* Override positioning and initial opacity */
-    opacity: 0; /* << CHANGE THIS LINE from 1 to 0 to hide it by default */
+    opacity: 0;
     position: absolute;
     top: 12px;
     right: 30px;
-
-    /* New Design */
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 6px;
@@ -399,22 +464,18 @@ main {
     transition: all 0.2s ease-in-out;
 }
 
-/* --- ADD THIS NEW RULE right after the one above --- */
-/* Show button on hover OR when in 'copied' state */
 .modal-code-container:hover #modal-copy-button,
 #modal-copy-button.copied {
     opacity: 1;
 }
 
-/* Style for the SVG icon inside the button */
 #modal-copy-button svg {
     width: 20px;
     height: 20px;
-    stroke: #fff; /* Set icon color */
+    stroke: #fff;
     transition: transform 0.2s ease;
 }
 
-/* Hover effect */
 #modal-copy-button:hover {
     background-color: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.4);
@@ -424,7 +485,6 @@ main {
     transform: scale(1.1);
 }
 
-/* "Copied" success state */
 #modal-copy-button.copied {
     background-color: var(--success-color);
     border-color: var(--success-color);

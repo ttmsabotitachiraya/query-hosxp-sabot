@@ -8,13 +8,19 @@ const checkIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height=
 // --- Get Modal DOM Elements ---
 const viewCodeModal = document.getElementById('view-code-modal');
 const modalCodeTitle = document.getElementById('modal-code-title');
+const modalCodeDescription = document.getElementById('modal-code-description');
 const modalCodeContentPre = document.getElementById('modal-code-content-pre');
 const modalCloseButton = document.getElementById('modal-close-button');
 const modalCopyButton = document.getElementById('modal-copy-button');
 
+// --- ADDED: Get Search DOM Elements ---
+const searchInput = document.getElementById('search-input');
+const noResultsMessage = document.getElementById('no-results-message');
+
 // --- Modal Functions ---
-function openCodeModal(title, code) {
+function openCodeModal(title, description, code) {
     modalCodeTitle.textContent = title;
+    modalCodeDescription.textContent = description;
     const codeElement = modalCodeContentPre.querySelector('code');
     codeElement.textContent = code;
     Prism.highlightElement(codeElement);
@@ -24,11 +30,11 @@ function openCodeModal(title, code) {
 function closeCodeModal() {
     viewCodeModal.classList.add('hidden');
     modalCodeTitle.textContent = '';
+    modalCodeDescription.textContent = '';
     modalCodeContentPre.querySelector('code').textContent = '';
 }
 
 // --- Card Button Handlers ---
-// This handler is for the copy button ON THE CARD (uses text feedback)
 function handleCopyCode(event) {
     const button = event.currentTarget;
     const pre = button.closest('.code-block-wrapper').querySelector('pre');
@@ -47,7 +53,7 @@ async function loadSqlCodes() {
     codeList.innerHTML = '<p class="loading-message">Loading SQL codes...</p>';
 
     const { data: sqlCodes, error } = await supabase
-        .from('sql_codes')
+        .from('queryhosxpsabot_sql_codes') // <-- EDITED
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -93,8 +99,9 @@ async function loadSqlCodes() {
         if (pre.scrollHeight > 200) {
             button.addEventListener('click', () => {
                 const title = card.querySelector('h2').textContent;
+                const description = card.querySelector('p').textContent;
                 const code = card.querySelector('code').textContent;
-                openCodeModal(title, code);
+                openCodeModal(title, description, code);
             });
         } else {
             button.style.display = 'none';
@@ -104,11 +111,42 @@ async function loadSqlCodes() {
     Prism.highlightAll();
 }
 
+// --- ADDED: Search Filter Function ---
+function filterCodes() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const codeCards = document.querySelectorAll('#code-list .code-card');
+    let visibleCount = 0;
+
+    codeCards.forEach(card => {
+        const title = card.querySelector('h2').textContent.toLowerCase();
+        const description = card.querySelector('p').textContent.toLowerCase();
+        const codeContent = card.querySelector('code').textContent.toLowerCase();
+
+        const isVisible = title.includes(searchTerm) || 
+                          description.includes(searchTerm) || 
+                          codeContent.includes(searchTerm);
+
+        if (isVisible) {
+            card.style.display = 'flex';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    if (visibleCount === 0 && searchTerm !== '') {
+        noResultsMessage.classList.remove('hidden');
+    } else {
+        noResultsMessage.classList.add('hidden');
+    }
+}
+
+
 // --- Global Event Listeners ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Set initial icon for the modal copy button
     modalCopyButton.innerHTML = copyIconSVG;
     loadSqlCodes();
+    searchInput.addEventListener('input', filterCodes);
 });
 modalCloseButton.addEventListener('click', closeCodeModal);
 viewCodeModal.addEventListener('click', (event) => {
@@ -121,8 +159,6 @@ document.addEventListener('keydown', (event) => {
         closeCodeModal();
     }
 });
-
-// MODIFIED: Modal copy button listener to use icons
 modalCopyButton.addEventListener('click', () => {
     const codeToCopy = modalCodeContentPre.querySelector('code').innerText;
     navigator.clipboard.writeText(codeToCopy).then(() => {

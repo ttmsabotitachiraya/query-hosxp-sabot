@@ -33,10 +33,23 @@
             <h2>Manage SQL Codes</h2>
             <button id="add-code-button" class="btn btn-primary">Add New Code</button>
 
+            <!-- ============================================= -->
+            <!-- ==        ADDED: Search Input Box          == -->
+            <!-- ============================================= -->
+            <div class="search-container">
+                <input type="search" id="search-input" placeholder="Search by title, description, or code...">
+            </div>
+
             <div id="code-management-list">
                 <!-- Admin code list will be loaded here -->
                 <p class="loading-message">Loading codes for admin...</p>
             </div>
+
+            <!-- ============================================= -->
+            <!-- ==     ADDED: No Results Message           == -->
+            <!-- ============================================= -->
+            <p id="no-results-message" class="no-codes-message hidden">No SQL codes found matching your search.</p>
+
         </div>
     </main>
 
@@ -68,6 +81,7 @@
         <div class="modal-content large">
             <span id="modal-close-button" class="close-button">&times;</span>
             <h2 id="modal-code-title">SQL Code</h2>
+            <p id="modal-code-description"></p>
             <div class="modal-code-container">
                  <button id="modal-copy-button" class="copy-button">Copy</button>
                  <pre id="modal-code-content-pre"><code class="language-sql"></code></pre>
