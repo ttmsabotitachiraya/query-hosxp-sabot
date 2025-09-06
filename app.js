@@ -87,6 +87,9 @@ async function loadSqlCodes() {
         `;
         codeList.appendChild(codeCard);
     });
+    
+    searchInput.value = '';
+    filterCodes();
 
     // Add event listeners for all buttons
     document.querySelectorAll('.copy-button').forEach(button => {
@@ -144,7 +147,7 @@ function filterCodes() {
 
 // --- Global Event Listeners ---
 document.addEventListener('DOMContentLoaded', () => {
-    modalCopyButton.innerHTML = copyIconSVG;
+    modalCopyButton.innerHTML = copyIconSVG; // EDITED
     loadSqlCodes();
     searchInput.addEventListener('input', filterCodes);
 });
@@ -159,6 +162,7 @@ document.addEventListener('keydown', (event) => {
         closeCodeModal();
     }
 });
+// EDITED: Logic for SVG icon switching
 modalCopyButton.addEventListener('click', () => {
     const codeToCopy = modalCodeContentPre.querySelector('code').innerText;
     navigator.clipboard.writeText(codeToCopy).then(() => {

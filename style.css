@@ -1,4 +1,7 @@
-/* style.css (เวอร์ชันปรับปรุงใหม่) */
+/* ============================================= */
+/* ==   STYLE.CSS - PROFESSIONAL DEV THEME    == */
+/* ==      INSPIRED BY TOKYO NIGHT THEME      == */
+/* ============================================= */
 
 /* --- Universal Box Sizing --- */
 *,
@@ -7,27 +10,32 @@
     box-sizing: border-box;
 }
 
-/* 1. Import Fonts และ กำหนดค่าสีหลัก (CSS Variables) */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+/* 1. Import Fonts & Define New Color Palette */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
 :root {
-    --primary-color: #007bff;
-    --primary-hover: #0056b3;
-    --secondary-color: #6c757d;
-    --background-color: #f8f9fa;
-    --surface-color: #ffffff;
-    --text-color: #212529;
-    --border-color: #dee2e6;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --font-primary: 'Poppins', sans-serif;
+    /* Tokyo Night Inspired Palette */
+    --background-color: #1a1b26;
+    --surface-color: #24283b;
+    --primary-color: #7aa2f7;
+    --primary-hover: #9dacfa;
+    --text-color: #c0caf5;
+    --text-color-secondary: #a9b1d6;
+    --border-color: #3b4261;
+    --success-color: #9ece6a;
+    --danger-color: #f7768e;
+
+    /* Fonts */
+    --font-primary: 'Inter', sans-serif;
     --font-code: 'Fira Code', monospace;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    /* UI Elements */
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     --border-radius: 8px;
 }
 
-/* 2. สไตล์พื้นฐาน */
+/* 2. Base Styles */
 body {
     font-family: var(--font-primary);
     margin: 0;
@@ -38,41 +46,37 @@ body {
 }
 
 header {
-    background-color: var(--surface-color);
-    color: var(--text-color);
+    background-color: rgba(26, 27, 38, 0.8); /* Semi-transparent for blur effect */
+    backdrop-filter: blur(10px);
     padding: 1rem 2rem;
-    text-align: center;
-    box-shadow: var(--shadow);
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border-color);
-    position: sticky; /* ADDED: ทำให้ header ติดตามเมื่อเลื่อนจอ */
-    top: 0; /* ADDED: ตำแหน่งของ header */
-    z-index: 100; /* ADDED: ให้ header อยู่เหนือเนื้อหาอื่น */
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 header h1 {
     margin: 0;
-    font-size: 1.8rem;
-    color: var(--primary-color);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-color);
 }
 
 nav a {
-    color: var(--primary-color);
+    color: var(--text-color-secondary);
     text-decoration: none;
-    margin: 0 15px;
     font-weight: 600;
     padding: 8px 16px;
-    border: 1px solid transparent;
     border-radius: var(--border-radius);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease-in-out;
 }
 
 nav a:hover {
     background-color: var(--primary-color);
-    color: var(--surface-color);
-    border-color: var(--primary-color);
+    color: var(--background-color);
 }
 
 main {
@@ -81,32 +85,33 @@ main {
     margin: 20px auto;
 }
 
-/* ============================================= */
-/* ==   ADDED: Styles for Search Container    == */
-/* ============================================= */
+/* 3. Search Input */
 .search-container {
     margin-bottom: 2rem;
-    background: var(--surface-color);
-    padding: 1.5rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
 }
+
 #search-input {
     width: 100%;
     padding: 14px 20px;
     font-size: 1rem;
+    background-color: var(--surface-color);
+    color: var(--text-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     font-family: var(--font-primary);
+    transition: all 0.3s ease;
+}
+#search-input::placeholder {
+    color: var(--text-color-secondary);
+    opacity: 0.7;
 }
 #search-input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    box-shadow: 0 0 0 4px rgba(122, 162, 247, 0.2);
 }
 
-
-/* 3. สไตล์สำหรับ List ของ Code */
+/* 4. Code Cards Grid */
 #code-list, #code-management-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -119,90 +124,81 @@ main {
     border-radius: var(--border-radius);
     padding: 1.5rem;
     box-shadow: var(--shadow);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
-    max-width: 100%;
     overflow: hidden;
 }
 
 .code-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-}
-
-.card-header {
-    margin-bottom: 1rem;
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
 .card-header h2, .card-header h3 {
     color: var(--primary-color);
-    margin: 0;
+    margin: 0 0 1rem 0;
     font-size: 1.25rem;
 }
 
 .code-card p {
     margin: 0 0 1rem 0;
-    color: var(--secondary-color);
-    flex-grow: 1; /* ทำให้ description ยืดเต็มพื้นที่ที่เหลือ */
+    color: var(--text-color-secondary);
+    flex-grow: 1;
 }
 
 .code-card small {
-    color: var(--secondary-color);
+    color: var(--text-color-secondary);
+    opacity: 0.6;
     font-size: 0.8rem;
     margin-top: 1rem;
     text-align: right;
 }
 
-/* 4. สไตล์สำหรับ Block แสดง Code */
+/* 5. Code Block Inside Cards */
 .code-block-wrapper {
     position: relative;
-    max-height: 200px; /* Set a fixed max-height */
+    max-height: 200px;
     overflow: hidden;
+    border-radius: 6px;
 }
 
-/* Fade-out effect to indicate more content */
 .code-block-wrapper::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 50px;
-    background: linear-gradient(to bottom, rgba(45, 45, 45, 0), rgba(45, 45, 45, 1));
-    pointer-events: none; /* Allows clicking through the gradient */
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--surface-color));
+    pointer-events: none;
 }
 
 .code-card pre {
-    background-color: #2d2d2d; /* Dark background for code */
+    background-color: #1e2030; /* Slightly darker than card for depth */
     padding: 1rem;
-    border-radius: 6px;
-    overflow-x: auto;
     margin: 0;
-    max-width: 100%;       /* ไม่ให้เกินขอบ */
-    overflow-x: auto;      /* ถ้าโค้ดยาว ให้เลื่อนซ้าย-ขวาได้ */
-    white-space: pre;      /* คงรูปแบบโค้ดเดิม */
-    word-wrap: normal;     /* ป้องกันการตัดคำผิด */
+    white-space: pre;
+    word-wrap: normal;
+    overflow-x: auto;
 }
 
 .code-card code {
     font-family: var(--font-code);
-    color: #f8f8f2; /* Light text color for code */
     font-size: 0.9rem;
 }
 
 .copy-button {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    background-color: #444;
-    color: white;
-    border: none;
-    padding: 5px 10px;
+    top: 8px; right: 8px;
+    background-color: rgba(0,0,0,0.3);
+    color: var(--text-color-secondary);
+    border: 1px solid var(--border-color);
+    padding: 4px 8px;
+    font-size: 0.8rem;
     border-radius: 4px;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .code-block-wrapper:hover .copy-button {
@@ -210,35 +206,38 @@ main {
 }
 .copy-button:hover {
     background-color: var(--primary-color);
+    color: var(--background-color);
+    border-color: var(--primary-color);
 }
 
 .view-full-code-button {
     background-color: transparent;
-    border: 1px solid var(--secondary-color);
-    color: var(--secondary-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color-secondary);
     padding: 6px 12px;
     border-radius: var(--border-radius);
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 1rem;
     align-self: flex-start;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease-in-out;
 }
 
 .view-full-code-button:hover {
-    background-color: var(--secondary-color);
-    color: var(--surface-color);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--background-color);
 }
 
-/* 5. ข้อความสถานะต่างๆ */
+/* 6. Status Messages */
 .loading-message, .error-message, .no-codes-message, #no-results-message {
-    grid-column: 1 / -1; /* ทำให้กินพื้นที่เต็มแถว */
+    grid-column: 1 / -1;
     text-align: center;
     padding: 40px;
     font-style: italic;
-    color: var(--secondary-color);
+    color: var(--text-color-secondary);
     background: var(--surface-color);
     border-radius: var(--border-radius);
-    border: 1px dashed var(--border-color); /* ADDED: เพิ่มเส้นประให้ดูเด่นขึ้น */
+    border: 1px dashed var(--border-color);
 }
 
 .error-message {
@@ -246,10 +245,10 @@ main {
     font-weight: bold;
 }
 
-/* 6. สไตล์สำหรับหน้า Admin */
+/* 7. Admin Page Styles */
 #admin-login {
     background-color: var(--surface-color);
-    padding: 2rem;
+    padding: 2.5rem;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     max-width: 400px;
@@ -262,67 +261,55 @@ main {
     color: var(--primary-color);
 }
 #admin-login input[type="password"] {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
     padding: 12px;
     margin-bottom: 1rem;
-    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    width: 90%;
+    width: 100%;
     font-size: 1rem;
+    transition: all 0.2s ease;
+}
+#admin-login input[type="password"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(122, 162, 247, 0.2);
 }
 
 .btn {
-    color: white;
+    color: var(--background-color);
     padding: 12px 20px;
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
-    transition: background-color 0.3s ease;
+    transition: all 0.2s ease;
 }
+.btn-primary { background-color: var(--primary-color); }
+.btn-primary:hover { background-color: var(--primary-hover); }
 
-.btn-primary {
-    background-color: var(--primary-color);
-}
-.btn-primary:hover {
-    background-color: var(--primary-hover);
-}
+#add-code-button { margin-bottom: 1.5rem; }
 
-#add-code-button {
-    margin-bottom: 1.5rem;
-}
+.admin-card { border-left: 3px solid var(--primary-color); }
+.admin-actions { margin-top: 1rem; text-align: right; }
+.btn-danger { background-color: var(--danger-color); }
+.btn-danger:hover { filter: brightness(1.2); }
+.btn-success { background-color: var(--success-color); }
+.btn-success:hover { filter: brightness(1.2); }
 
-.admin-card {
-    border: 2px solid var(--primary-color);
-}
-
-.admin-actions {
-    margin-top: 1rem;
-    text-align: right;
-}
-
-.btn-danger {
-    background-color: var(--danger-color);
-    font-size: 0.9rem;
-    padding: 8px 12px;
-}
-.btn-danger:hover {
-    background-color: #c82333;
-}
-
-/* 7. สไตล์สำหรับ Modal ทั่วไป */
+/* 8. Modal Styles */
 .modal {
     position: fixed; z-index: 1000; left: 0; top: 0;
     width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(26, 27, 38, 0.7);
+    backdrop-filter: blur(5px);
     display: flex; justify-content: center; align-items: center;
     opacity: 0; visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
-.modal:not(.hidden) {
-    opacity: 1;
-    visibility: visible;
-}
+.modal:not(.hidden) { opacity: 1; visibility: visible; }
 
 .modal-content {
     background-color: var(--surface-color);
@@ -332,165 +319,95 @@ main {
     max-width: 600px;
     border-radius: var(--border-radius);
     position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    transform: scale(0.95);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transform: scale(0.95) translateY(20px);
     transition: transform 0.3s ease;
 }
-.modal:not(.hidden) .modal-content {
-    transform: scale(1);
-}
+.modal:not(.hidden) .modal-content { transform: scale(1) translateY(0); }
 
 .close-button {
     position: absolute; top: 10px; right: 20px;
-    color: var(--secondary-color);
+    color: var(--text-color-secondary);
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    transition: color 0.2s ease;
 }
 .close-button:hover { color: var(--text-color); }
 
 .modal-content h2 { color: var(--primary-color); margin-top: 0; }
 .modal-content form label {
     display: block; margin-top: 1rem; margin-bottom: 5px; font-weight: 600;
+    color: var(--text-color-secondary);
 }
 .modal-content form input[type="text"], .modal-content form textarea {
-    width: 100%; /* CHANGED: ให้เต็มความกว้าง */
+    width: 100%;
     padding: 12px;
+    background-color: var(--background-color);
+    color: var(--text-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     font-size: 1rem;
     font-family: var(--font-primary);
+    transition: all 0.2s ease;
 }
-.modal-content form #sql-code-area {
-    font-family: var(--font-code);
+.modal-content form input[type="text"]:focus, .modal-content form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(122, 162, 247, 0.2);
 }
-
-.btn-success {
-    background-color: var(--success-color);
-    margin-top: 1rem;
-}
-.btn-success:hover {
-    background-color: #218838;
-}
+.modal-content form #sql-code-area { font-family: var(--font-code); }
 
 #save-message { margin-top: 10px; font-weight: bold; }
-
 .hidden { display: none !important; }
 
 #modal-code-description {
-    margin-bottom: 1.5rem;
+    margin: 1rem 0 1.5rem 0;
     padding-left: 1rem;
     font-style: italic;
-    color: var(--secondary-color);
-    border-left: 3px solid var(--border-color);
+    color: var(--text-color-secondary);
+    border-left: 3px solid var(--primary-color);
 }
 
-/* 8. Styles for the View Code Modal */
-.modal-content.large {
-    max-width: 900px; /* Wider modal for code */
-    width: 90%;
-}
-
-.modal-code-container {
-    position: relative;
-    margin-top: 1rem;
-}
-
+/* 9. View Code Modal */
+.modal-content.large { max-width: 900px; width: 90%; }
+.modal-code-container { position: relative; }
 .modal-code-container #modal-code-content-pre {
-    background-color: #2d2d2d;
+    background-color: #1e2030;
     border-radius: 6px;
-    padding: 1rem;
-    max-height: 65vh; /* Limit height and make it scrollable */
+    padding: 1.5rem;
+    max-height: 65vh;
     overflow: auto;
     margin: 0;
 }
-
-/* Adjust position of the copy button inside the modal */
-.modal-code-container .copy-button {
-    opacity: 1; /* Always visible in modal */
-}
-
-/* ============================================= */
-/* ==   9. Responsive Design & Mobile UX      == */
-/* ============================================= */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center; /* MODIFIED: จัดกลางเมื่อเรียงเป็นคอลัมน์ */
-    }
-    
-    header h1 {
-        font-size: 1.5rem; /* ADDED: ลดขนาด H1 บนมือถือ */
-    }
-    
-    main {
-        padding: 1rem; /* MODIFIED: ลด padding บนมือถือ */
-    }
-
-    #code-list, #code-management-list {
-        grid-template-columns: 1fr;
-    }
-
-    .modal-content {
-        padding: 1.5rem; /* MODIFIED: ลด padding ของ modal บนมือถือ */
-    }
-}
-
-@media (max-width: 480px) {
-    .code-card pre {
-        white-space: pre-wrap; /* ตัดบรรทัดให้อ่านง่ายขึ้น */
-        word-break: break-word;
-    }
-}
-
-
-/* 10. Styles for the NEW Modal Copy Button */
-#modal-copy-button {
+#modal-copy-button { /* Re-style for new theme */
     opacity: 0;
-    position: absolute;
-    top: 12px;
-    right: 30px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: absolute; top: 12px; right: 25px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
 }
+.modal-code-container:hover #modal-copy-button, #modal-copy-button.copied { opacity: 1; }
+#modal-copy-button svg { width: 20px; height: 20px; stroke: var(--text-color-secondary); transition: all 0.2s ease; }
+#modal-copy-button:hover { background-color: var(--primary-color); border-color: var(--primary-color); }
+#modal-copy-button:hover svg { stroke: var(--background-color); transform: scale(1.1); }
+#modal-copy-button.copied { background-color: var(--success-color); border-color: var(--success-color); transform: scale(1.1); }
+#modal-copy-button.copied svg { stroke: var(--background-color); }
 
-.modal-code-container:hover #modal-copy-button,
-#modal-copy-button.copied {
-    opacity: 1;
+
+/* 10. Responsive Design */
+@media (max-width: 768px) {
+    header { flex-direction: column; gap: 1rem; text-align: center; }
+    header h1 { font-size: 1.5rem; }
+    main { padding: 1rem; }
+    #code-list, #code-management-list { grid-template-columns: 1fr; }
+    .modal-content { padding: 1.5rem; }
 }
 
-#modal-copy-button svg {
-    width: 20px;
-    height: 20px;
-    stroke: #fff;
-    transition: transform 0.2s ease;
-}
-
-#modal-copy-button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
-}
-
-#modal-copy-button:hover svg {
-    transform: scale(1.1);
-}
-
-#modal-copy-button.copied {
-    background-color: var(--success-color);
-    border-color: var(--success-color);
-    transform: scale(1.1);
-}
-
-#modal-copy-button.copied svg {
-    transform: scale(1);
+@media (max-width: 480px) {
+    .code-card pre { white-space: pre-wrap; word-break: break-all; }
 }

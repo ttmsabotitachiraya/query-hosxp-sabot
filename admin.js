@@ -210,7 +210,7 @@ window.addEventListener('click', (event) => { if (event.target === addCodeModal)
 addCodeForm.addEventListener('submit', handleAddCode);
 
 document.addEventListener('DOMContentLoaded', () => {
-    modalCopyButton.innerHTML = copyIconSVG;
+    modalCopyButton.innerHTML = copyIconSVG; // EDITED
     adminDashboardDiv.classList.add('hidden');
     searchInput.addEventListener('input', filterCodes);
 });
@@ -219,6 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
 modalCloseButton.addEventListener('click', closeCodeModal);
 viewCodeModal.addEventListener('click', (event) => { if (event.target === viewCodeModal) closeCodeModal(); });
 document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !viewCodeModal.classList.contains('hidden')) closeCodeModal(); });
+// EDITED: Logic for SVG icon switching
 modalCopyButton.addEventListener('click', () => {
     const codeToCopy = modalCodeContentPre.querySelector('code').innerText;
     navigator.clipboard.writeText(codeToCopy).then(() => {
