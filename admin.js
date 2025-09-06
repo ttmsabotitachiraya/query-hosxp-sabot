@@ -126,16 +126,22 @@ async function loadAdminSqlCodes() {
         const codeCard = document.createElement('div');
         codeCard.classList.add('code-card', 'admin-card');
         codeCard.innerHTML = `
-            <div class="card-header"><h3>${code.title}</h3></div>
-            <p>${code.description || 'No description provided.'}</p>
-            <div class="code-block-wrapper">
-                <button class="copy-button">Copy</button>
-                <pre><code class="language-sql">${code.code}</code></pre>
-            </div>
-            <button class="view-full-code-button">View Full Code</button>
-            <small>Added on: ${new Date(code.created_at).toLocaleString()}</small>
-            <div class="admin-actions"><button class="btn btn-danger delete-button" data-id="${code.id}">Delete</button></div>
-        `;
+    <div class="card-header">
+        <h3 data-text="${code.title}">${code.title}</h3>
+        <div class="admin-actions">
+            <button class="btn btn-danger delete-button" data-id="${code.id}">Delete</button>
+        </div>
+    </div>
+    <div class="card-content">
+        <p>${code.description || 'No description provided.'}</p>
+        <div class="code-block-wrapper">
+            <button class="copy-button">Copy</button>
+            <pre><code class="language-sql">${code.code}</code></pre>
+        </div>
+        <button class="view-full-code-button">View Full Code</button>
+        <small>Added on: ${new Date(code.created_at).toLocaleString()}</small>
+    </div>
+`;
         codeManagementList.appendChild(codeCard);
     });
     

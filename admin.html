@@ -26,28 +26,25 @@
             <h2>Admin Login</h2>
             <input type="password" id="admin-password" placeholder="Enter Admin Password">
             <button id="login-button" class="btn btn-primary">Login</button>
-            <p id="login-message" class="error-message"></p>
+            <p id="login-message"></p>
         </div>
 
         <div id="admin-dashboard" class="hidden">
-            <h2>Manage SQL Codes</h2>
-            <button id="add-code-button" class="btn btn-primary">Add New Code</button>
-
-            <!-- ============================================= -->
-            <!-- ==        ADDED: Search Input Box          == -->
-            <!-- ============================================= -->
-            <div class="search-container">
-                <input type="search" id="search-input" placeholder="Search by title, description, or code...">
+            <!-- Dashboard Header Wrapper -->
+            <div class="dashboard-header">
+                <div class="header-actions">
+                    <h2>Manage SQL Codes</h2>
+                    <button id="add-code-button" class="btn btn-primary">Add New Code</button>
+                </div>
+                <div class="search-container">
+                    <input type="search" id="search-input" placeholder="Search by title, description, or code...">
+                </div>
             </div>
 
             <div id="code-management-list">
                 <!-- Admin code list will be loaded here -->
-                <p class="loading-message">Loading codes for admin...</p>
             </div>
 
-            <!-- ============================================= -->
-            <!-- ==     ADDED: No Results Message           == -->
-            <!-- ============================================= -->
             <p id="no-results-message" class="no-codes-message hidden">No SQL codes found matching your search.</p>
 
         </div>
@@ -74,16 +71,14 @@
         </div>
     </div>
 
-    <!-- ============================================= -->
-    <!-- ==   Modal for Viewing Full SQL Code       == -->
-    <!-- ============================================= -->
+    <!-- Modal for Viewing Full SQL Code -->
     <div id="view-code-modal" class="modal hidden">
         <div class="modal-content large">
             <span id="modal-close-button" class="close-button">&times;</span>
             <h2 id="modal-code-title">SQL Code</h2>
             <p id="modal-code-description"></p>
             <div class="modal-code-container">
-                 <button id="modal-copy-button" class="copy-button"></button> <!-- เนื้อหาจะถูกใส่โดย JS -->
+                 <button id="modal-copy-button" class="copy-button"></button>
                  <pre id="modal-code-content-pre"><code class="language-sql"></code></pre>
             </div>
         </div>
