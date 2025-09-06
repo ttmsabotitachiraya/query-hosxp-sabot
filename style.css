@@ -1,25 +1,29 @@
 /* ============================================= */
-/* ==      STYLE.CSS - SYNTHWAVE GRID         == */
-/* ==   CYBERPUNK AESTHETICS & MASONRY LAYOUT == */
+/* ==       Synthwave Grid - Style.css        == */
+/* ==  Organized for Clarity & Maintainability == */
 /* ============================================= */
 
 /* --- Universal Box Sizing --- */
 *, *::before, *::after { box-sizing: border-box; }
 
-/* 1. Import Fonts & Define New Color Palette */
+/* ======================================================= */
+/* == 1. BASE & GLOBAL STYLES (Colors, Fonts, Body, Header) */
+/* ======================================================= */
+
+/* --- 1.1. Import Fonts & Define Color Palette (CSS Variables) --- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
 :root {
     /* Synthwave/Cyberpunk Palette */
-    --background-color: #0d0221; /* Deep Indigo */
-    --surface-color: #1d103b; /* Dark Purple Surface */
-    --primary-color: #ff00c1;   /* Hot Pink/Magenta */
-    --secondary-color: #00f6ff; /* Cyan */
+    --background-color: #0d0221;
+    --surface-color: #1d103b;
+    --primary-color: #ff00c1;
+    --secondary-color: #00f6ff;
     --text-color: #f0f0f0;
     --text-color-secondary: #a7a2c1;
     --border-color: #3d2c6c;
-    --success-color: #05ffa1;   /* Mint Green */
+    --success-color: #05ffa1;
     --danger-color: #f7768e;
 
     /* Fonts & UI */
@@ -28,7 +32,7 @@
     --border-radius: 6px;
 }
 
-/* 2. Base Styles & NEW CRT Scanlines Background */
+/* --- 1.2. Body & CRT Scanlines Background --- */
 body {
     font-family: var(--font-primary);
     margin: 0; padding: 0;
@@ -50,6 +54,7 @@ body::after {
     pointer-events: none;
 }
 
+/* --- 1.3. Header & Navigation --- */
 header {
     background-color: rgba(13, 2, 33, 0.7);
     backdrop-filter: blur(10px);
@@ -61,20 +66,272 @@ header {
     position: sticky; top: 0; z-index: 100;
 }
 
-header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--text-color); text-shadow: 0 0 8px var(--secondary-color); }
-nav a { color: var(--text-color-secondary); text-decoration: none; font-weight: 600; padding: 8px 16px; border-radius: var(--border-radius); transition: all 0.2s ease-in-out; border: 1px solid transparent; }
-nav a:hover { background-color: transparent; color: var(--secondary-color); border-color: var(--secondary-color); text-shadow: 0 0 5px var(--secondary-color); }
-main { padding: 2rem; max-width: 1200px; margin: 20px auto; }
+header h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-color);
+    text-shadow: 0 0 8px var(--secondary-color);
+}
 
-/* 3. Search Input with Neon Focus */
+nav a {
+    color: var(--text-color-secondary);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: var(--border-radius);
+    transition: all 0.2s ease-in-out;
+    border: 1px solid transparent;
+}
+
+nav a:hover {
+    background-color: transparent;
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+main {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+/* --- 1.4. Search Input with Neon Focus --- */
 .search-container { margin-bottom: 2rem; }
-#search-input { width: 100%; padding: 14px 20px; font-size: 1rem; background-color: var(--surface-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); font-family: var(--font-primary); transition: all 0.3s ease; }
-#search-input::placeholder { color: var(--text-color-secondary); opacity: 0.7; }
-#search-input:focus { outline: none; border-color: var(--secondary-color); box-shadow: 0 0 15px var(--secondary-color), inset 0 0 5px rgba(0, 246, 255, 0.3); }
+
+#search-input {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 1rem;
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-family: var(--font-primary);
+    transition: all 0.3s ease;
+}
+
+#search-input::placeholder {
+    color: var(--text-color-secondary);
+    opacity: 0.7;
+}
+
+#search-input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 15px var(--secondary-color), inset 0 0 5px rgba(0, 246, 255, 0.3);
+}
+
+/* --- 1.5. Message Styles (Loading, Error, No Results) --- */
+.loading-message,
+.error-message,
+.no-codes-message,
+#no-results-message {
+    display: block;
+    text-align: center;
+    padding: 40px;
+    font-style: italic;
+    color: var(--text-color-secondary);
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    border: 1px dashed var(--border-color);
+}
 
 /* ======================================================= */
-/* ==   DASHBOARD HEADER & CONTROLS STYLING (ADMIN)     == */
+/* == 2. LAYOUT & MASONRY GRID (Grid, Cards, Responsive)  == */
 /* ======================================================= */
+
+/* --- 2.1. Masonry Layout Setup --- */
+#code-list, #code-management-list {
+    display: block;
+    column-count: 3;
+    column-gap: 1.5rem;
+}
+
+.code-card {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    break-inside: avoid;
+}
+
+/* --- 2.2. Responsive Design (Media Queries) --- */
+@media (max-width: 1024px) {
+    #code-list, #code-management-list { column-count: 2; }
+}
+
+@media (max-width: 768px) {
+    #code-list, #code-management-list { column-count: 1; }
+    
+    header {
+        padding: 1rem;
+        flex-direction: row;
+    }
+    
+    header h1 { font-size: 1.2rem; }
+    
+    nav a {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+    
+    main { padding: 1rem; }
+}
+
+
+/* ======================================================= */
+/* == 3. CARD & CODE BLOCK STYLING (Looks & Interactivity) == */
+/* ======================================================= */
+
+/* --- 3.1. Card Container --- */
+.code-card {
+    background: linear-gradient(160deg, var(--surface-color) 0%, #110829 100%);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    transition: all 0.3s ease;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+}
+
+.code-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 25px var(--primary-color), 0 8px 30px rgba(0,0,0,0.7);
+}
+
+/* --- 3.2. Card Header with Glitch Effect --- */
+.card-header {
+    background-color: rgba(0,0,0,0.2);
+    padding: 1.2rem 1.5rem;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.card-header h2, .card-header h3 {
+    color: var(--text-color);
+    margin: 0;
+    font-size: 1.25rem;
+    transition: color 0.2s ease;
+    position: relative;
+}
+
+.code-card:hover .card-header h2,
+.code-card:hover .card-header h3 {
+    color: var(--primary-color);
+}
+
+@keyframes glitch {
+    20%, 60% { transform: translate(-2px, 0); }
+    40%, 80% { transform: translate(2px, 0); }
+    100% { transform: translate(0,0); }
+}
+
+.card-header h2::before, .card-header h2::after,
+.card-header h3::before, .card-header h3::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: transparent;
+    clip: rect(0, 900px, 0, 0);
+}
+
+.card-header h2::before, .card-header h3::before { left: 2px; text-shadow: -1px 0 var(--secondary-color); }
+.card-header h2::after, .card-header h3::after { left: -2px; text-shadow: -1px 0 var(--primary-color); }
+
+.code-card:hover .card-header h2::before,
+.code-card:hover .card-header h3::before {
+    animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
+
+.code-card:hover .card-header h2::after,
+.code-card:hover .card-header h3::after {
+    animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) reverse both infinite;
+}
+
+/* --- 3.3. Card Content & Details --- */
+.card-content { padding: 0 1.5rem 1.5rem 1.5rem; }
+.card-content p { margin: 0 0 1rem 0; color: var(--text-color-secondary); flex-grow: 1; }
+.card-content small { color: var(--text-color-secondary); opacity: 0.5; font-size: 0.8rem; margin-top: 1rem; text-align: right; display: block; }
+
+/* --- 3.4. Code Block --- */
+.code-block-wrapper {
+    position: relative;
+    max-height: 250px;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.code-block-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, #110829);
+    pointer-events: none;
+}
+
+pre {
+    background-color: rgba(0,0,0,0.3);
+    padding: 1rem;
+    margin: 0;
+    white-space: pre;
+    word-wrap: normal;
+    overflow-x: auto;
+}
+
+code { font-family: var(--font-code); font-size: 0.9rem; }
+
+/* --- 3.5. Code Block Buttons --- */
+.copy-button {
+    position: absolute;
+    top: 8px; right: 8px;
+    background-color: rgba(0,0,0,0.5);
+    color: var(--text-color-secondary);
+    border: 1px solid var(--border-color);
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.code-block-wrapper:hover .copy-button { opacity: 1; }
+.copy-button:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border-color: var(--primary-color);
+}
+
+.view-full-code-button {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color-secondary);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+    align-self: flex-start;
+    transition: all 0.2s ease-in-out;
+}
+
+.view-full-code-button:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--background-color);
+    text-shadow: none;
+}
+
+/* ======================================================= */
+/* == 4. ADMIN SPECIFIC STYLES (Admin Dashboard & Login)  == */
+/* ======================================================= */
+
+/* --- 4.1. Dashboard Header & Controls --- */
 .dashboard-header {
     background-color: var(--surface-color);
     border: 1px solid var(--border-color);
@@ -97,104 +354,22 @@ main { padding: 2rem; max-width: 1200px; margin: 20px auto; }
     text-shadow: 0 0 5px var(--secondary-color);
 }
 
-.dashboard-header .search-container {
-    margin-bottom: 0;
-}
+.dashboard-header .search-container { margin-bottom: 0; }
 
-/* ======================================================= */
-/* ==           MASONRY LAYOUT SETUP                    == */
-/* ======================================================= */
-#code-list, #code-management-list {
-    display: block;
-    column-count: 3;
-    column-gap: 1.5rem;
-}
+/* --- 4.2. Admin Card & Actions --- */
+.admin-card .card-header h3 { padding-right: 90px; }
 
-.code-card {
-    display: inline-block;
-    width: 100%;
-    margin-bottom: 1.5rem;
-    break-inside: avoid;
-}
-@media (max-width: 1024px) { #code-list, #code-management-list { column-count: 2; } }
-@media (max-width: 768px) { #code-list, #code-management-list { column-count: 1; } }
-
-/* ======================================================= */
-/* ==           CARD STYLING                            == */
-/* ======================================================= */
-.code-card {
-    background: linear-gradient(160deg, var(--surface-color) 0%, #110829 100%);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 0;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-    transition: all 0.3s ease;
-    display: flex; flex-direction: column;
-    overflow: hidden;
-}
-
-.code-card:hover { transform: translateY(-8px); box-shadow: 0 0 25px var(--primary-color), 0 8px 30px rgba(0,0,0,0.7); }
-
-.card-header {
-    background-color: rgba(0,0,0,0.2);
-    padding: 1.2rem 1.5rem;
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
-    margin-bottom: 0.5rem;
-    position: relative;
-}
-
-.card-header h2, .card-header h3 { color: var(--text-color); margin: 0; font-size: 1.25rem; transition: color 0.2s ease; position: relative; }
-.code-card:hover .card-header h2, .code-card:hover .card-header h3 { color: var(--primary-color); }
-
-@keyframes glitch { 20%, 60% { transform: translate(-2px, 0); } 40%, 80% { transform: translate(2px, 0); } 100% { transform: translate(0,0); } }
-.card-header h2::before, .card-header h2::after,
-.card-header h3::before, .card-header h3::after {
-    content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; clip: rect(0, 900px, 0, 0);
-}
-.card-header h2::before, .card-header h3::before { left: 2px; text-shadow: -1px 0 var(--secondary-color); }
-.card-header h2::after, .card-header h3::after { left: -2px; text-shadow: -1px 0 var(--primary-color); }
-.code-card:hover .card-header h2::before, .code-card:hover .card-header h3::before { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite; }
-.code-card:hover .card-header h2::after, .code-card:hover .card-header h3::after { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) reverse both infinite; }
-
-.card-content { padding: 0 1.5rem 1.5rem 1.5rem; }
-.card-content p { margin: 0 0 1rem 0; color: var(--text-color-secondary); flex-grow: 1; }
-.card-content small { color: var(--text-color-secondary); opacity: 0.5; font-size: 0.8rem; margin-top: 1rem; text-align: right; display: block; }
-
-.code-block-wrapper { position: relative; max-height: 250px; overflow: hidden; border-radius: 4px; border: 1px solid var(--border-color); }
-.code-block-wrapper::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: linear-gradient(to bottom, transparent, #110829); pointer-events: none; }
-pre { background-color: rgba(0,0,0,0.3); padding: 1rem; margin: 0; white-space: pre; word-wrap: normal; overflow-x: auto; }
-code { font-family: var(--font-code); font-size: 0.9rem; }
-.copy-button { position: absolute; top: 8px; right: 8px; background-color: rgba(0,0,0,0.5); color: var(--text-color-secondary); border: 1px solid var(--border-color); padding: 4px 8px; font-size: 0.8rem; border-radius: 4px; cursor: pointer; opacity: 0; transition: all 0.2s ease; }
-.code-block-wrapper:hover .copy-button { opacity: 1; }
-.copy-button:hover { background-color: var(--primary-color); color: var(--background-color); border-color: var(--primary-color); }
-.view-full-code-button { background-color: transparent; border: 1px solid var(--border-color); color: var(--text-color-secondary); padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-top: 1rem; align-self: flex-start; transition: all 0.2s ease-in-out; }
-.view-full-code-button:hover { background-color: var(--secondary-color); border-color: var(--secondary-color); color: var(--background-color); text-shadow: none; }
-
-.loading-message, .error-message, .no-codes-message, #no-results-message { display: block; text-align: center; padding: 40px; font-style: italic; color: var(--text-color-secondary); background: var(--surface-color); border-radius: var(--border-radius); border: 1px dashed var(--border-color); }
-
-/* ======================================================= */
-/* ==     ADMIN CARD SPECIFIC STYLES (NEW)              == */
-/* ======================================================= */
-.admin-card .card-header h3 {
-    padding-right: 90px; /* Make space for delete button */
-}
 .admin-actions {
     position: absolute;
     top: 50%;
     right: 1.5rem;
     transform: translateY(-50%);
-    z-index: 5; /* Ensure button is on top of glitch effect */
-}
-.admin-actions .delete-button {
-    padding: 6px 12px;
-    font-size: 0.9rem;
+    z-index: 5;
 }
 
+.admin-actions .delete-button { padding: 6px 12px; font-size: 0.9rem; }
 
-/* ======================================================= */
-/* ==   ADMIN PAGE & MODAL STYLES (CORRECTED)           == */
-/* ======================================================= */
-
+/* --- 4.3. Admin Login Page --- */
 #admin-login {
     background-color: var(--surface-color);
     padding: 2.5rem;
@@ -238,9 +413,7 @@ code { font-family: var(--font-code); font-size: 0.9rem; }
     box-shadow: 0 0 15px var(--secondary-color), inset 0 0 5px rgba(0, 246, 255, 0.3);
 }
 
-#admin-login .btn {
-    width: 100%;
-}
+#admin-login .btn { width: 100%; }
 
 #admin-login #login-message {
     background: transparent;
@@ -253,36 +426,201 @@ code { font-family: var(--font-code); font-size: 0.9rem; }
     color: var(--danger-color);
 }
 
-.btn { color: var(--text-color); padding: 12px 20px; border: 1px solid; border-radius: var(--border-radius); cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.2s ease; background: transparent; }
+/* --- 4.4. Button Styles (General & Specific) --- */
+.btn {
+    color: var(--text-color);
+    padding: 12px 20px;
+    border: 1px solid;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    background: transparent;
+}
 .btn:active { transform: scale(0.98); }
-.btn-primary { border-color: var(--secondary-color); color: var(--secondary-color); }
-.btn-primary:hover { background-color: var(--secondary-color); color: var(--background-color); box-shadow: 0 0 15px var(--secondary-color); }
-.btn-danger { border-color: var(--danger-color); color: var(--danger-color); }
-.btn-danger:hover { background-color: var(--danger-color); color: var(--background-color); box-shadow: 0 0 15px var(--danger-color); }
-.btn-success { border-color: var(--success-color); color: var(--success-color); }
-.btn-success:hover { background-color: var(--success-color); color: var(--background-color); box-shadow: 0 0 15px var(--success-color); }
 
-.modal { position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(13, 2, 33, 0.6); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
-.modal:not(.hidden) { opacity: 1; visibility: visible; }
-.modal-content { background-color: var(--surface-color); padding: 2rem; border: 1px solid var(--border-color); width: 90%; max-width: 600px; border-radius: var(--border-radius); position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: scale(0.95); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease; }
-.modal:not(.hidden) .modal-content { transform: scale(1); opacity: 1; }
-.close-button { position: absolute; top: 10px; right: 20px; color: var(--text-color-secondary); font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.2s ease; }
+.btn-primary { border-color: var(--secondary-color); color: var(--secondary-color); }
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    color: var(--background-color);
+    box-shadow: 0 0 15px var(--secondary-color);
+}
+
+.btn-danger { border-color: var(--danger-color); color: var(--danger-color); }
+.btn-danger:hover {
+    background-color: var(--danger-color);
+    color: var(--background-color);
+    box-shadow: 0 0 15px var(--danger-color);
+}
+
+.btn-success { border-color: var(--success-color); color: var(--success-color); }
+.btn-success:hover {
+    background-color: var(--success-color);
+    color: var(--background-color);
+    box-shadow: 0 0 15px var(--success-color);
+}
+
+
+/* ======================================================= */
+/* == 5. MODAL & POP-UP STYLES (Full Code Viewer & Forms)  == */
+/* ======================================================= */
+
+/* --- 5.1. Modal Container & Background --- */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(13, 2, 33, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hidden { display: none !important; }
+
+/* --- 5.2. Modal Content & Animation --- */
+.modal-content {
+    background-color: var(--surface-color);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    width: 90%;
+    max-width: 600px;
+    border-radius: var(--border-radius);
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transform: scale(0.95);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modal:not(.hidden) .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-content.large {
+    max-width: 900px;
+    width: 90%;
+}
+
+/* --- 5.3. Modal Header & Close Button --- */
+.close-button {
+    position: absolute;
+    top: 10px; right: 20px;
+    color: var(--text-color-secondary);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
 .close-button:hover { color: var(--text-color); }
-.modal-content h2 { color: var(--secondary-color); margin-top: 0; text-shadow: 0 0 5px var(--secondary-color); }
-.modal-content form label { display: block; margin-top: 1rem; margin-bottom: 5px; font-weight: 600; color: var(--text-color-secondary); }
-.modal-content form input[type="text"], .modal-content form textarea { width: 100%; padding: 12px; background-color: var(--background-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 1rem; font-family: var(--font-primary); transition: all 0.2s ease; }
-.modal-content form input[type="text"]:focus, .modal-content form textarea:focus { outline: none; border-color: var(--secondary-color); box-shadow: 0 0 0 4px rgba(0, 246, 255, 0.2); }
+
+.modal-content h2 {
+    color: var(--secondary-color);
+    margin-top: 0;
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+/* --- 5.4. Modal Forms --- */
+.modal-content form label {
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--text-color-secondary);
+}
+
+.modal-content form input[type="text"],
+.modal-content form textarea {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-family: var(--font-primary);
+    transition: all 0.2s ease;
+}
+
+.modal-content form input[type="text"]:focus,
+.modal-content form textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 4px rgba(0, 246, 255, 0.2);
+}
+
 .modal-content form #sql-code-area { font-family: var(--font-code); }
 #save-message { margin-top: 10px; font-weight: bold; }
-.hidden { display: none !important; }
-#modal-code-description { margin: 1rem 0 1.5rem 0; padding-left: 1rem; font-style: italic; color: var(--text-color-secondary); border-left: 3px solid var(--secondary-color); }
-.modal-content.large { max-width: 900px; width: 90%; }
+#modal-code-description {
+    margin: 1rem 0 1.5rem 0;
+    padding-left: 1rem;
+    font-style: italic;
+    color: var(--text-color-secondary);
+    border-left: 3px solid var(--secondary-color);
+}
+
+/* --- 5.5. Full Code Viewer in Modal --- */
 .modal-code-container { position: relative; }
-.modal-code-container #modal-code-content-pre { background-color: rgba(0,0,0,0.3); border-radius: 6px; padding: 1.5rem; max-height: 65vh; overflow: auto; margin: 0; border: 1px solid var(--border-color); }
-#modal-copy-button { opacity: 0; position: absolute; top: 12px; right: 25px; background-color: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color); border-radius: 6px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease-in-out; }
-.modal-code-container:hover #modal-copy-button, #modal-copy-button.copied { opacity: 1; }
-#modal-copy-button svg { width: 20px; height: 20px; stroke: var(--text-color-secondary); transition: all 0.2s ease; }
-#modal-copy-button:hover { background-color: var(--secondary-color); border-color: var(--secondary-color); }
-#modal-copy-button:hover svg { stroke: var(--background-color); transform: scale(1.1); }
-#modal-copy-button.copied { background-color: var(--success-color); border-color: var(--success-color); transform: scale(1.1); }
+.modal-code-container #modal-code-content-pre {
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 6px;
+    padding: 1.5rem;
+    max-height: 65vh;
+    overflow: auto;
+    margin: 0;
+    border: 1px solid var(--border-color);
+}
+
+#modal-copy-button {
+    opacity: 0;
+    position: absolute;
+    top: 12px; right: 25px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    width: 40px; height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.modal-code-container:hover #modal-copy-button,
+#modal-copy-button.copied {
+    opacity: 1;
+}
+
+#modal-copy-button svg {
+    width: 20px; height: 20px;
+    stroke: var(--text-color-secondary);
+    transition: all 0.2s ease;
+}
+
+#modal-copy-button:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+#modal-copy-button:hover svg {
+    stroke: var(--background-color);
+    transform: scale(1.1);
+}
+
+#modal-copy-button.copied {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    transform: scale(1.1);
+}
 #modal-copy-button.copied svg { stroke: var(--background-color); }
