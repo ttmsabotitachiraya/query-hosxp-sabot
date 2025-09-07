@@ -142,11 +142,12 @@ main {
 /* == 2. LAYOUT & MASONRY GRID (Grid, Cards, Responsive)  == */
 /* ======================================================= */
 
-/* --- 2.1. Masonry Layout Setup --- */
+/* --- 2.1. Grid Layout Setup (เปลี่ยนจาก Masonry เป็น Grid) --- */
 #code-list, #code-management-list {
-    display: block;
-    column-count: 3;
-    column-gap: 1.5rem;
+    display: grid;
+    /* สร้างคอลัมน์อัตโนมัติ โดยแต่ละคอลัมน์มีความกว้างอย่างน้อย 350px และขยายเต็มพื้นที่ */
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem; /* ใช้ gap เพื่อกำหนดระยะห่างทั้งแนวตั้งและแนวนอน */
 }
 
 .code-card {
