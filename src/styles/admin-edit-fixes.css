@@ -1,0 +1,113 @@
+/* Admin Edit Button visibility & styling fixes
+   - Makes the Edit button visible and clearly styled
+   - Prevents it from being clipped by card containers
+   - Adds responsive adjustments for small screens
+*/
+
+/* Ensure admin actions are visible and placed neatly */
+.admin-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  position: absolute; /* keep existing absolute positioning */
+  top: 50%;
+  right: 1.25rem;
+  transform: translateY(-50%);
+  z-index: 999; /* ensure it sits above other card content */
+  pointer-events: auto;
+  white-space: nowrap;
+}
+
+/* Make sure card header won't clip the buttons */
+.card-header {
+  overflow: visible; /* allow absolute children to show */
+  position: relative; /* keep stacking context */
+}
+
+/* Increase right padding for H3 in admin cards so text doesn't overlap buttons */
+.admin-card .card-header h3 {
+  padding-right: 160px; /* leave room for multiple action buttons */
+  box-sizing: border-box;
+}
+
+/* Edit button specific styling (visible & consistent with other buttons) */
+.admin-actions .edit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  line-height: 1;
+  font-weight: 600;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid var(--secondary-color, #7c5cff);
+  color: var(--secondary-color, #7c5cff);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease,
+              box-shadow 0.15s ease, transform 0.06s ease;
+  box-shadow: none;
+}
+
+/* Hover / active states to match other button styles */
+.admin-actions .edit-button:hover {
+  background-color: var(--secondary-color, #7c5cff);
+  color: var(--background-color, #0b0610);
+  box-shadow: 0 0 10px rgba(124, 92, 255, 0.18);
+}
+
+.admin-actions .edit-button:active {
+  transform: translateY(1px) scale(0.995);
+}
+
+.admin-actions .edit-button:focus {
+  outline: 3px solid rgba(124, 92, 255, 0.18);
+  outline-offset: 2px;
+}
+
+/* Ensure delete button keeps similar spacing and doesn't overlap */
+.admin-actions .delete-button {
+  margin-left: 0;
+  padding: 6px 12px;
+}
+
+/* If the card container previously used overflow:hidden (clipping),
+   ensure the card header area remains visible for action buttons */
+.code-card {
+  /* keep existing visual effects; do not globally change overflow unless necessary */
+  /* we only changed .card-header overflow to visible above */
+}
+
+/* Small screens: stack actions to the top-right inside the header and reduce padding
+   Also switch to static positioning if absolute causes layout issues */
+@media (max-width: 640px) {
+  .admin-card .card-header h3 { padding-right: 110px; }
+
+  .admin-actions {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.8rem;
+    transform: none;
+    gap: 0.4rem;
+  }
+
+  .admin-actions .edit-button,
+  .admin-actions .delete-button {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Accessibility / visibility fallbacks */
+/* If CSS variables are unavailable, provide defaults with slightly higher contrast */
+.admin-actions .edit-button {
+  border-color: color-mix(in srgb, var(--secondary-color, #7c5cff) 80%, #0000 20%);
+}
+
+/* If animations or transitions are disabled (reduced motion), disable heavy transitions */
+@media (prefers-reduced-motion: reduce) {
+  .admin-actions .edit-button,
+  .admin-actions .delete-button {
+    transition: none;
+  }
+}
